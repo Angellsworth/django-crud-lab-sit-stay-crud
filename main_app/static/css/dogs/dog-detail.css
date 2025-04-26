@@ -1,0 +1,55 @@
+.dog-container {
+    padding: 35px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dog-img {
+    width: 75%;
+    max-width: 350px;
+}
+
+.dog-img img {
+    width: 100%;
+    border-radius: var(--card-border-radius);
+}
+
+.dog-details {
+    width: 98%;
+    text-align: center;
+}
+
+.dog-details h1 {
+    font-size: var(--font-xxl);
+    margin: 15px 0 3px;
+}
+
+.dog-details h2 {
+    font-size: var(--font-xl);
+    margin: 0 0 10px;
+}
+
+.dog-details p {
+    font-size: var(--font-reg);
+    margin: 5px 0;
+}
+
+@media only screen and (min-width: 768px) {
+    .dog-container {
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+    }
+
+    .dog-img {
+        width: 25%;
+        max-width: 250px;
+        margin-right: 25px;
+    }
+
+    .dog-details {
+        text-align: left;
+    }
+}

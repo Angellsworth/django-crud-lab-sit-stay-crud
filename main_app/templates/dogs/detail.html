@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/dogs/dog-detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="dog-container">
+  <div class="dog-img">
+    <img src="{% static 'images/happy-dog.png' %}" alt="A happy dog" />
+  </div>
+  <div class="dog-details">
+    <h1>{{ dog.name }}</h1>
+    {% if dog.age > 0 %}
+      <h2>A {{ dog.age }} year old {{ dog.breed }}</h2>
+    {% else %}
+      <h2>A {{ dog.breed }} puppy.</h2>
+    {% endif %}
+    <p>{{ dog.description }}</p>
+  </div>
+  <div class="dog-actions">
+    <a href="{% url 'dog-update' dog.id %}" class="btn warn">Edit</a>
+    <a href="{% url 'dog-delete' dog.id %}" class="btn danger">Delete</a>
+  </div>
+</section>
+{% endblock %}
