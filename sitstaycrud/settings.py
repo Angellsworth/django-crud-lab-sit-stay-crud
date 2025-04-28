@@ -125,6 +125,10 @@ STATICFILES_DIRS = [
     BASE_DIR / 'main_app/static',
 ]
 
+LOGIN_REDIRECT_URL = 'dog-index'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'home'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 

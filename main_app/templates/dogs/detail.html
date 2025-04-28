@@ -2,14 +2,15 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'css/dogs/dog-detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/dogs/dog-detail.css' %} ">
 {% endblock %}
 
 {% block content %}
 <section class="dog-container">
   <div class="dog-img">
-    <img src="{% static 'images/happy-dog.png' %}" alt="A happy dog" />
+    <img src="{% static 'images/sk8r-boi-dog.png' %}" alt="A Skater dog" />
   </div>
+
   <div class="dog-details">
     <h1>{{ dog.name }}</h1>
     {% if dog.age > 0 %}
@@ -18,10 +19,112 @@
       <h2>A {{ dog.breed }} puppy.</h2>
     {% endif %}
     <p>{{ dog.description }}</p>
-  </div>
-  <div class="dog-actions">
-    <a href="{% url 'dog-update' dog.id %}" class="btn warn">Edit</a>
-    <a href="{% url 'dog-delete' dog.id %}" class="btn danger">Delete</a>
+    <br>
+    <div class="dog-actions">
+      <a href="{% url 'dog-update' dog.id %}" class="btn warn">Edit</a>
+      <a href="{% url 'dog-delete' dog.id %}" class="btn danger">Delete</a>
+    </div>
   </div>
 </section>
+
+<!-- Existing dog-container above -->
+<div class="feedings-toy-container">
+  <section class="feedings">
+    <div class="subsection-title">
+      <h2>Feedings</h2>
+      <img src="{% static 'images/dog-treat.png' %}" alt="A dog treat" />
+      <img src="{% static 'images/dog-bone.png' %}" alt="A dog bone" />
+      <img src="{% static 'images/dog-bowl.png' %}" alt="A dog bowltreat" />
+    </div>
+    
+    <!-- Add Feeding Form -->
+    <h3>Add a Feeding</h3>
+    <form
+      action="{% url 'add-feeding' dog.id %}"
+      method="post"
+      class="subsection-content"
+      autocomplete="off"
+    >
+      {% csrf_token %} 
+      {{ feeding_form.as_p }}
+      <button type="submit" class="btn submit">Add Feeding</button>
+    </form>
+
+    <!-- Past Feedings Table -->
+    <h3>Past Feedings</h3>
+    {% if dog.feeding_set.all.count %}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Meal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for feeding in dog.feeding_set.all %}
+            <tr>
+              <td>{{ feeding.date }}</td>
+              <td>{{ feeding.get_meal_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <div class="subsection-content">
+        <p>⚠️ {{ dog.name }} has not been fed!</p>
+      </div>
+    {% endif %}
+  </section>
+  <section class="toys">
+    <div class="subsection-title">
+      <h2>Toys</h2>
+      <img src="{% static 'images/dog-rooster-toy.png' %}" alt="A plush rooster" />
+      <img src="{% static 'images/dog-ball-toy.png' %}" alt="A fetch ball" />
+      <img src="{% static 'images/dog-rope.png' %}" alt="A rope toy" />
+    </div>
+  
+    <!-- Dog's current toys -->
+    <h3>{{ dog.name }}'s Toys</h3>
+    <div class="subsection-content">
+      {% if dog.toys.count %}
+        {% for toy in dog.toys.all %}
+          <div class="toy-container">
+            <div class="color-block" style="background-color: {{ toy.color }}"></div>
+            <a href="{% url 'toy-detail' toy.id %}">
+              <p>A {{ toy.color }} {{ toy.name }}</p>
+            </a>
+
+            <form action="{% url 'remove-toy' dog.id toy.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn danger">Remove Toy</button>
+            </form>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="no-toys">{{ dog.name }} doesn't have any toys yet!</p>
+      {% endif %}
+    </div>
+  
+    <!-- Available toys -->
+    <h3>Available Toys</h3>
+    <div class="subsection-content">
+      {% if toys.count %}
+        {% for toy in toys %}
+        <div class="toy-container">
+          <div class="color-block" style="background-color: {{ toy.color }}"></div>
+            <p>{{ toy.color }} {{ toy.name }}</p>
+            <form action="{% url 'associate-toy' dog.id toy.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn submit">Give Toy</button>
+            </form>
+        </div>
+        {% endfor %}
+      {% else %}
+        <p class="all-toys">{{ dog.name }} already has all the available toys 🥳</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
 {% endblock %}
+
+
